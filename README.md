@@ -78,6 +78,7 @@ URL: https://mycattle.azurewebsites.net/
 
 To browse, please log in:
 Username: 'guest'
+
 Password: 'gu94estuzo85'
 
 > **Note:** The web application may take a few seconds to start up.
