@@ -68,7 +68,7 @@ To use the application, follow these steps:
 4. **Explore Cattle Information**: After inputting data, go to the main dashboard and access cattle details by age group, active herds, and fields.
 5. **Generate Reports**: Create livestock movement reports to monitor changes in livestock across different age groups during selected time periods.
 
-## 🌐 Live Website
+## Live Website
 
 Check out the live version in the following GIT repository;
 
@@ -84,7 +84,7 @@ Password: 'gu94estuzo85'
 
 > **Note:** The web application may take a few seconds to start up.
 
-## 👨‍💻 Authors
+## Authors
 
 This project was created as the final project for the CodeAcademy Python Programming course, collaboratively by:
 
