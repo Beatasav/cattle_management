@@ -77,6 +77,7 @@ Check out the live version in the following GIT repository;
 URL: https://mycattle.azurewebsites.net/
 
 To browse, please log in:
+
 Username: 'guest'
 
 Password: 'gu94estuzo85'
