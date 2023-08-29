@@ -1,11 +1,9 @@
 # My Cattle 🐮 - Cattle Management Web Application
 
 My Cattle is a web application designed to assist cattle farmers in managing their cattle, herds, and fields. 
-The application offers a centralized platform for recording and accessing essential information about livestock and fields, as well as generating livestock movement reports. 
+The application offers a centralized platform for recording and accessing essential information about livestock and fields, as well as generating livestock movement reports.
 
-This README provides an overview of the application's features, including its installation process, deployment information, and guidelines for effective usage of both the live version and locally installed versions.
-
-## 💡 Features
+## Features
 
 - **Cattle Management**: Record and manage individual cattle details, including number, name, gender, breed, acquisition, birth and entry dates, loss methods, and more. Allocate cattle to existing herds and update entries seamlessly for accurate management.
 
@@ -23,46 +21,66 @@ This README provides an overview of the application's features, including its in
 
 - **User Authentication**: Secure access to the application with user authentication.
 
-## 🌐 Deployment
-
-Explore the live version of the application online. Please consider limitations:
-
-- **Access URL**: https://mycattle.azurewebsites.net/
-- **Limitations**: The deployment is hosted on a free Microsoft Azure account, which might result in a slightly longer initial loading process when accessed for the first time.
-- **User Access**: To browse, please log in:
-  - Username: 'guest'
-  - Password: 'gu94estuzo85'
-
-## 💾 Installation
+## Installation
 
 1. Clone original project repository without deployment settings for local development and testing:
- `[https://github.comJeskevicRasa/my_cattle](https://github.com/JeskevicRasa/my_cattle)'
-3. Install dependencies: `pip install -r requirements.txt`
-4. Set up the database - note that this is running on SQLite by default, you will have to download and install it: `python manage.py migrate`
-5. Create a superuser: `python manage.py createsuperuser`
-6. Start the development server: `python manage.py runserver`
+
+ ```git clone https://github.com/Beatasav/cattle_management```
+
+2. Activate the virtual environment:
+
+On MacOS:
+
+```source venv/bin/activate```
+
+On Windows:
+
+```venv\scripts\activate```
+
+On Linux:
+
+```source venv/bin/activate```
+
+3. Install required packages.
+
+```pip install -r requirements.txt```
+
+4. reate the database - note that this is running on SQLite by default, you will have to download and install it.
+
+```py manage.py makemigrations```
+
+```py manage.py migrate```
+5. Create superuser for model updates and the ability to create user groups that modify access in the admin panel.
+
+```py manage.py makemigrations```
+
+6. Run the aplication
+
+```py manage.py runserver```
  
-## 🏃‍♀️ Usage
+## Usage
 
-To use the application, follow these steps based on your preferred version:
-
-### Deployed Version:
-
-1. **Access the Application**: Visit the provided deployment URL: https://mycattle.azurewebsites.net/.
-2. **Log in**: Use the following credentials:
-   - Username: 'guest'
-   - Password: 'gu94estuzo85'
-3. **Explore Cattle Information**: On the main page's dashboard, access cattle details by age group, active herds, and fields.
-4. **Manage Data**: Use the navigation panel to access all recorded fields, herds, and cattle. From there, execute management actions like adding new items or updating existing data.
-5. **Generate Reports**: Create livestock movement reports to monitor changes in livestock across different age groups during selected time periods.
-
-### Local Installation:
+To use the application, follow these steps:
 
 1. **Access the Application**: Open your web browser and navigate to `http://localhost:8000`.
 2. **Login or Create an Account**: Log in using your superuser account or create a new account.
 3. **Manage Data**: Use the navigation panel to access the interfaces for managing fields, herds, and cattle. Input relevant data for each section.
 4. **Explore Cattle Information**: After inputting data, go to the main dashboard and access cattle details by age group, active herds, and fields.
 5. **Generate Reports**: Create livestock movement reports to monitor changes in livestock across different age groups during selected time periods.
+
+## 🌐 Live Website
+
+Check out the live version in the following GIT repository;
+
+[My Cattle - Deployed Version](https://github.com/Beatasav/my_cattle_app.git)
+
+URL: https://mycattle.azurewebsites.net/
+
+To browse, please log in:
+Username: 'guest'
+Password: 'gu94estuzo85'
+
+> **Note:** The web application may take a few seconds to start up.
 
 ## 👨‍💻 Authors
 
@@ -71,7 +89,5 @@ This project was created as the final project for the CodeAcademy Python Program
 - [Beata Savkaitė](https://github.com/Beatasav)
 - [Rasa Jeskevič](https://github.com/JeskevicRasa)
 
-The original version of the project that we worked on together without deployment settings is here: https://github.com/JeskevicRasa/my_cattle
 
-
-Happy cattle management! 🐮
+Happy cattle management! 
