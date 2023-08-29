@@ -1,0 +1,152 @@
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Welcome</title>
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-pzjw8f+ua5v5l8W5+ST+ZttrvjfKrO56+dCvz4cLIFhP9S8cV+5U2tflRqsr/N4" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/css/colors.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/my_farm_styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/table_styles.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+<!-- Navigation -->
+
+<nav class="navbar navbar-expand-lg static-top navbar-custom">
+    <div class="container">
+        <a class="navbar-brand nav-link my-cattle-link" href="{% url 'my_farm:home' %}">My Cattle</a>
+        {% if user.is_authenticated %}
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'my_farm:field_list' %}">Fields</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'my_farm:herd_list' %}">Herds</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCattle" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Cattle
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCattle">
+                        <a class="dropdown-item" href="{% url 'my_farm:add_cattle' %}">Add Cattle</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'my_farm:cattle_info' %}">All Cattle</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'my_farm:generate_report' %}">Movement report</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i> <!-- User icon -->
+                        {{ user.username }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+                        <a class="dropdown-item" href="{% url 'profile' %}">Account</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endif %}
+
+
+    <!-- Page Content -->
+
+    <body>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+
+    <script>
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.getElementById('togglePasswordIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+
+  <!-- Add Bootstrap CSS link here -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-pzjw8f+ua5v5l8W5+ST+ZttrvjfKrO56+dCvz4cLIFhP9S8cV+5U2tflRqsr/N4"
+    crossorigin="anonymous">
+    <!-- Add Bootstrap JS script here -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-pzjw8f+ua5v5l8W5+ST+ZttrvjfKrO56+dCvz4cLIFhP9S8cV+5U2tflRqsr/N4"
+    crossorigin="anonymous"></script>
+
+<!-- Add Select2 CSS link here -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
+
+<!-- Add Select2 JS script here -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.select2-multiple').select2({
+      placeholder: 'Select options',
+      allowClear: true
+    });
+  });
+</script>
+
+
+  <script>
+    function toggleComments(cattleId) {
+      const shortComments = document.querySelector(`#comments-short-${cattleId}`);
+      const fullComments = document.querySelector(`#comments-full-${cattleId}`);
+      const toggleLink = document.querySelector(`a[data-cattle-id="${cattleId}"][data-action="toggle-comments"]`);
+
+      if (shortComments.style.display === "none") {
+        // Show short comments and hide full comments
+        shortComments.style.display = "";
+        fullComments.style.display = "none";
+        toggleLink.textContent = "Show More";
+      } else {
+        // Show full comments and hide short comments
+        shortComments.style.display = "none";
+        fullComments.style.display = "";
+        toggleLink.textContent = "Show Less";
+      }
+    }
+  </script>
+</body>
+</html>
+
+

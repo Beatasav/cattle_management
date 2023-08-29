@@ -1,0 +1,77 @@
+{% extends 'base_user.html' %}
+
+{% block content %}
+  <title>Group Data</title>
+
+  <h3 class="text-uppercase" style="text-align: center; margin: 30px;">Group Data - {{ selected_group }}</h3>
+
+  <div class="table-responsive">
+    <table id="group-data-table" class="table table-bordered">
+      <thead>
+        <tr class="column-names-groups">
+          <th>Type</th>
+          <th>Number</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Breed</th>
+          <th>Birth Date</th>
+          <th>Acquisition Method</th>
+          <th>Entry Date</th>
+          <th class="comments">Comments</th>
+        </tr>
+      </thead>
+<tbody>
+  {% for group in groups %}
+    {% for cattle in group.cattle_list %}
+      <tr>
+        <td>{{ cattle.type }}</td>
+        <td class="cattle-number">
+          <a href="{% url 'my_farm:cattle_detail' cattle.id %}">{{ cattle.number }}</a>
+        </td>
+        <td>{{ cattle.name }}</td>
+        <td>{{ cattle.gender }}</td>
+        <td>{{ cattle.breed }}</td>
+        <td>{{ cattle.birth_date|date:"Y-m-d" }}</td>
+        <td>{{ cattle.acquisition_method }}</td>
+        <td>{{ cattle.entry_date|date:"Y-m-d" }}</td>
+        <td>
+          <div id="comments-short-{{ cattle.id }}">{{ cattle.comments|truncatechars:20 }}</div>
+          <div id="comments-full-{{ cattle.id }}" style="display: none;">{{ cattle.comments }}</div>
+          <small>
+            <a href="#" data-cattle-id="{{ cattle.id }}" data-action="toggle-comments" onclick="toggleComments({{ cattle.id }}); return false;" style="display: inline;">Show More</a>
+          </small>
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="9">No cattle in the group.</td>
+      </tr>
+    {% endfor %}
+  {% endfor %}
+</tbody>
+    </table>
+  </div>
+
+{% block scripts %}
+  <script>
+    function toggleComments(cattleId) {
+      const shortComments = document.querySelector(`#comments-short-${cattleId}`);
+      const fullComments = document.querySelector(`#comments-full-${cattleId}`);
+      const toggleLink = document.querySelector(`a[data-cattle-id="${cattleId}"][data-action="toggle-comments"]`);
+
+      if (shortComments.style.display === "none") {
+        // Show short comments and hide full comments
+        shortComments.style.display = "";
+        fullComments.style.display = "none";
+        toggleLink.textContent = "Show More";
+      } else {
+        // Show full comments and hide short comments
+        shortComments.style.display = "none";
+        fullComments.style.display = "";
+        toggleLink.textContent = "Show Less";
+      }
+    }
+  </script>
+{% endblock %}
+
+{% endblock %}
