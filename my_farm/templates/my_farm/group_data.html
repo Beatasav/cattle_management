@@ -35,11 +35,10 @@
         <td>{{ cattle.acquisition_method }}</td>
         <td>{{ cattle.entry_date|date:"Y-m-d" }}</td>
         <td>
-          <div id="comments-short-{{ cattle.id }}">{{ cattle.comments|truncatechars:20 }}</div>
+          <div id="comments-short-{{ cattle.id }}">{{ cattle.comments|truncatechars:5 }}</div>
           <div id="comments-full-{{ cattle.id }}" style="display: none;">{{ cattle.comments }}</div>
-          <small>
-            <a href="#" data-cattle-id="{{ cattle.id }}" data-action="toggle-comments" onclick="toggleComments({{ cattle.id }}); return false;" style="display: inline;">Show More</a>
-          </small>
+          <small><a href="#" data-cattle-id="{{ cattle.id }}" data-action="toggle-comments"
+                    onclick="toggleComments({{ cattle.id }}); return false;" style="display: inline;">Show More</a></small>
         </td>
       </tr>
     {% empty %}
@@ -52,26 +51,5 @@
     </table>
   </div>
 
-{% block scripts %}
-  <script>
-    function toggleComments(cattleId) {
-      const shortComments = document.querySelector(`#comments-short-${cattleId}`);
-      const fullComments = document.querySelector(`#comments-full-${cattleId}`);
-      const toggleLink = document.querySelector(`a[data-cattle-id="${cattleId}"][data-action="toggle-comments"]`);
-
-      if (shortComments.style.display === "none") {
-        // Show short comments and hide full comments
-        shortComments.style.display = "";
-        fullComments.style.display = "none";
-        toggleLink.textContent = "Show More";
-      } else {
-        // Show full comments and hide short comments
-        shortComments.style.display = "none";
-        fullComments.style.display = "";
-        toggleLink.textContent = "Show Less";
-      }
-    }
-  </script>
-{% endblock %}
 
 {% endblock %}

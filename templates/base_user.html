@@ -86,22 +86,6 @@
         </div>
     </body>
 
-    <script>
-        function togglePasswordVisibility(inputId) {
-            const passwordInput = document.getElementById(inputId);
-            const toggleIcon = document.getElementById('togglePasswordIcon');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            }
-        }
-    </script>
-
   <!-- Add Bootstrap CSS link here -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     integrity="sha384-pzjw8f+ua5v5l8W5+ST+ZttrvjfKrO56+dCvz4cLIFhP9S8cV+5U2tflRqsr/N4"

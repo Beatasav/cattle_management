@@ -5,6 +5,9 @@ html, body {
     height: 80%;
 }
 
+label {
+   color: white;
+   }
 
 .form-heading {
     align-items: center;
@@ -68,8 +71,8 @@ html, body {
     flex-direction: column;
 }
 
-.text-muted {
-    filter: brightness(1.25);
+.form-text.text-muted {
+    color: #888; /* Your brighter grey color */
 }
 
 .btn-primary.btn-block {
