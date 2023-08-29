@@ -74,7 +74,7 @@ Check out the live version in the following GIT repository;
 
 [My Cattle - Deployed Version](https://github.com/Beatasav/my_cattle_app.git)
 
-URL: https://mycattle.azurewebsites.net/
+Access URL: https://mycattle.azurewebsites.net/
 
 To browse, please log in:
 
@@ -82,7 +82,8 @@ Username: 'guest'
 
 Password: 'gu94estuzo85'
 
-> **Note:** The web application may take a few seconds to start up.
+> **Note:** The deployment is hosted on a free Microsoft Azure account, which might result in a slightly longer initial loading process when accessed for the first time.
+
 
 ## Authors
 
