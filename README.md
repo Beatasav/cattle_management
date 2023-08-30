@@ -71,9 +71,7 @@ To use the application, follow these steps:
 
 ## Live Website
 
-Check out the live version in the following GIT repository;
-
-[My Cattle - Deployed Version](https://github.com/Beatasav/my_cattle_app.git)
+To view the website demo;
 
 Access URL: https://mycattle.azurewebsites.net/
 
