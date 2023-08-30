@@ -1,5 +1,4 @@
-from .cattle_groups import GroupsManagement
-
+from .utils import estimate_cattle_weight
 
 class GroupNumbers:
     """
@@ -58,12 +57,12 @@ class GroupNumbers:
         and reports the differences in both quantity and weight between the defined dates.
 
         :param start_date: The start date for the period of calculation.
-        :param end_date: The end date for the period of calculation.
+        :param end_date: The end d
+        ate for the period of calculation.
         :param start_date_groups: A dictionary containing the group data organized by group name for the start date.
         :param end_date_groups: A dictionary containing the group data organized by group name for the end date.
 
         """
-
         start_date_list = start_date_groups.get(self.group_name, [])
         end_date_list = end_date_groups.get(self.group_name, [])
 
@@ -106,7 +105,7 @@ class GroupNumbers:
             cattle = item['cattle']
 
             if 'acquisition_method' in cattle and cattle['entry_date'] >= start_date:
-                entry_weight = round(GroupsManagement().estimate_cattle_weight(cattle['id'], cattle['entry_date']))
+                entry_weight = round(estimate_cattle_weight(cattle['id'], cattle['entry_date']))
 
                 if cattle['acquisition_method'] == 'Birth':
                     self.birth_count += 1
@@ -138,7 +137,7 @@ class GroupNumbers:
             cattle = item['cattle']
 
             if 'loss_method' in cattle:
-                end_weight = round(GroupsManagement().estimate_cattle_weight(
+                end_weight = round(estimate_cattle_weight(
                     cattle['id'], cattle['end_date'])) if cattle['end_date'] is not None else 0
 
                 if cattle['loss_method'] == 'Death':
@@ -183,7 +182,7 @@ class GroupNumbers:
             if cattle['end_date'] is not None and cattle['entry_date'] <= start_date \
                     and cattle['id'] not in [cattle['cattle']['id'] for cattle in start_date_list] \
                     and cattle['end_date'] <= end_date:
-                end_weight = round(GroupsManagement().estimate_cattle_weight(cattle['id'], cattle['end_date']))
+                end_weight = round(estimate_cattle_weight(cattle['id'], cattle['end_date']))
 
                 if item not in start_date_list:
                     moved_in.append({'cattle': cattle, 'weight': end_weight})
@@ -191,7 +190,7 @@ class GroupNumbers:
             if cattle['entry_date'] >= start_date \
                     and cattle['id'] not in [cattle['cattle']['id'] for cattle in end_date_list] \
                     and 'loss_method' not in cattle:
-                entry_weight = round(GroupsManagement().estimate_cattle_weight(cattle['id'], cattle['entry_date']))
+                entry_weight = round(estimate_cattle_weight(cattle['id'], cattle['entry_date']))
 
                 if item not in start_date_list:
                     moved_out.append({'cattle': cattle, 'weight': entry_weight})
