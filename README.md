@@ -50,6 +50,7 @@ On Linux:
 ```py manage.py makemigrations```
 
 ```py manage.py migrate```
+
 5. Create superuser for model updates and the ability to create user groups that modify access in the admin panel.
 
 ```py manage.py makemigrations```
@@ -85,12 +86,6 @@ Password: 'gu94estuzo85'
 > **Note:** The deployment is hosted on a free Microsoft Azure account, which might result in a slightly longer initial loading process when accessed for the first time.
 
 
-## Authors
-
-This project was created as the final project for the CodeAcademy Python Programming course, collaboratively by:
-
-- [Beata Savkaitė](https://github.com/Beatasav)
-- [Rasa Jeskevič](https://github.com/JeskevicRasa)
 
 
 Happy cattle management! 
