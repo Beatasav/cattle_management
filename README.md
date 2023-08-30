@@ -50,6 +50,7 @@ On Linux:
 ```py manage.py makemigrations```
 
 ```py manage.py migrate```
+
 5. Create superuser for model updates and the ability to create user groups that modify access in the admin panel.
 
 ```py manage.py makemigrations```
@@ -68,26 +69,20 @@ To use the application, follow these steps:
 4. **Explore Cattle Information**: After inputting data, go to the main dashboard and access cattle details by age group, active herds, and fields.
 5. **Generate Reports**: Create livestock movement reports to monitor changes in livestock across different age groups during selected time periods.
 
-## 🌐 Live Website
+## Live Website
 
-Check out the live version in the following GIT repository;
+To view the website demo;
 
-[My Cattle - Deployed Version](https://github.com/Beatasav/my_cattle_app.git)
-
-URL: https://mycattle.azurewebsites.net/
+Access URL: https://mycattle.azurewebsites.net/
 
 To browse, please log in:
+
 Username: 'guest'
+
 Password: 'gu94estuzo85'
 
-> **Note:** The web application may take a few seconds to start up.
+> **Note:** The deployment is hosted on a free Microsoft Azure account, which might result in a slightly longer initial loading process when accessed for the first time.
 
-## 👨‍💻 Authors
-
-This project was created as the final project for the CodeAcademy Python Programming course, collaboratively by:
-
-- [Beata Savkaitė](https://github.com/Beatasav)
-- [Rasa Jeskevič](https://github.com/JeskevicRasa)
 
 
 Happy cattle management! 
