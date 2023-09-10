@@ -1,3 +1,5 @@
+/* General Styles */
+
 html, body {
     background-color: #5bb081;
     background-size: cover;
@@ -6,20 +8,28 @@ html, body {
 }
 
 label {
-   color: white;
-   }
+    color: white;
+}
 
+.small-icon {
+    width: 100px;
+    height: 100px;
+}
+
+/* Form Heading Styles */
 .form-heading {
     align-items: center;
     color: white;
     font-size: 24px;
 }
 
+/* Container Styles */
 .container {
     height: 100%;
     justify-content: center;
 }
 
+/* Register Card Styles */
 .register-card {
     align-items: center;
     height: auto;
@@ -31,6 +41,7 @@ label {
     color: white;
 }
 
+/* Profile Card Styles */
 .profile-card {
     display: flex;
     flex-direction: column;
@@ -60,6 +71,7 @@ label {
     text-align: center;
 }
 
+/* Login Card Styles */
 .login-card {
     height: auto;
     margin-top: 50px;
@@ -71,10 +83,12 @@ label {
     flex-direction: column;
 }
 
+/* Form Text Styles */
 .form-text.text-muted {
-    color: #888; /* Your brighter grey color */
+    color: #888;
 }
 
+/* Button Styles */
 .btn-primary.btn-block {
     background-color: #d47e1e;
 }
@@ -108,6 +122,7 @@ label {
     color: white;
 }
 
+/* Input Group Styles */
 .input-group-prepend span {
     width: 50px;
     background-color: #28a745;
@@ -115,89 +130,11 @@ label {
     border: 0 !important;
 }
 
+/* Links Styles */
 .links {
     color: white;
 }
 
 .links a {
     margin-left: 4px;
-}color: white
-      padding: 20px;
 }
-    .profile-image {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 20px;
-    }
-
-    .profile-info {
-      font-size: 18px;
-      text-align: center;
-    }
-
-
-
-.login-card {
-  height: auto;
-  margin-top: 50px;
-  margin-bottom: auto;
-  width: 450px;
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Muted text */
-
-.text-muted {
-   filter: brightness(1.25)
-   }
-
-/* Login and register page buttons */
-
-
-.btn-block {
-    color: white;
-    background-color: #d47e1e;
-    outline: none;
-    }
-
-.btn-block:hover {
-
-  background-color: #c27219;
-  color: white;
-  outline: none;
-}
-
-
-.login-button {
-	color: white;
-	width: 120px;
-	display: center
-}
-
-.btn-lg {
-    color: white;
-    background-color: #d47e1e;
-    transition: background-color 0.3s ease;
-    }
-
-.btn-lg:hover {
-  background-color: #c27219;
-  color: white;
-
-}
-
-/* Login and register icons */
-
-.input-group-prepend span {
-	width: 50px;
-	background-color: #28a745;
-	color: black;
-	border: 0 !important;
-}
-
-
