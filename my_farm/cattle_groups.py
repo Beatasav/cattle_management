@@ -1,6 +1,101 @@
-from .utils import calculate_age, estimate_cattle_weight
-from .models import Cattle
-from .report_calculations import GroupNumbers
+from dateutil.relativedelta import relativedelta
+from my_farm.models import Cattle
+from .report_calculations import GroupDataFilters
+
+
+class GroupsManagement:
+    """
+    Manages groups of cattle and performs calculations on the groups.
+    """
+
+    def __init__(self):
+        """
+        Initializes a GroupsManagement instance with an empty dictionary to store cattle groups.
+
+        The 'groups' attribute is a dictionary where each key represents the name of a cattle group,
+        and the corresponding value is a list of GroupDataFilters instances containing cattle data for that group.
+        """
+        self.groups: dict[str, list[GroupDataFilters]] = {}
+
+    def calculate_groups(self, reference_date):
+        """
+        Calculates the groups of cattle based on the provided estimation date.
+
+        :param reference_date: The reference date for the calculation.
+        :return: A dictionary containing the calculated groups of cattle.
+        """
+        cattle_list = list(Cattle.objects.filter(deleted=False).values())
+
+        groups = {
+            'Cows': [
+                cattle for cattle in cattle_list if (
+                    cattle['gender'] == 'Cow' and cattle['entry_date'] < reference_date
+                )
+            ],
+            'Calves': [
+                cattle for cattle in cattle_list if (
+                    cattle['gender'] in ['Heifer', 'Bull'] and
+                    0 <= self.calculate_age(cattle['birth_date'], reference_date) < 12 and
+                    cattle['entry_date'] < reference_date
+                )
+            ],
+            'Young_Heifer': [
+                cattle for cattle in cattle_list if (
+                    cattle['gender'] == 'Heifer' and
+                    12 <= self.calculate_age(cattle['birth_date'], reference_date) < 24 and
+                    cattle['entry_date'] < reference_date
+                )
+            ],
+            'Adult_Heifer': [
+                cattle for cattle in cattle_list if (
+                    cattle['gender'] == 'Heifer' and
+                    self.calculate_age(cattle['birth_date'], reference_date) >= 24 and
+                    cattle['entry_date'] < reference_date
+                )
+            ],
+            'Young_Bull': [
+                cattle for cattle in cattle_list if (
+                    cattle['gender'] == 'Bull' and
+                    12 <= self.calculate_age(cattle['birth_date'], reference_date) < 24 and
+                    cattle['entry_date'] < reference_date
+                )
+            ],
+            'Adult_Bull': [
+                cattle for cattle in cattle_list if (
+                    cattle['gender'] == 'Bull' and
+                    self.calculate_age(cattle['birth_date'], reference_date) >= 24 and
+                    cattle['entry_date'] < reference_date
+                )
+            ],
+        }
+        return groups
+
+    def add_group(self, group_name, reference_date):
+        """
+        Adds a group with the provided group name to the groups list based on the estimation date.
+
+        :param group_name: The name of the group to add.
+        :param reference_date: The reference date for the group calculation.
+        """
+        groups = self.calculate_groups(reference_date)
+        group_data = groups.get(group_name, [])
+        self.groups[group_name] = group_data
+
+    @staticmethod
+    def calculate_age(birth_date, reference_date):
+        """
+        Calculates the age in months based on the birthdate and estimation date.
+
+        :param birth_date: The birthdate of the cattle.
+        :param reference_date: The reference date for the calculation.
+        :return: The age in months.
+        """
+        if reference_date < birth_date:
+            return -1
+        age = relativedelta(reference_date, birth_date)
+        age_in_months = age.years * 12 + age.months
+        return age_in_months
+
 
 class CattleGroupData:
     """
@@ -28,18 +123,18 @@ class CattleGroupData:
         Extracts the cattle data from the group data and assigns it to the instance properties.
         """
         for cattle_data in self.group_data:
-            if cattle_data['cattle']['end_date'] is None:
+            if cattle_data['end_date'] is None:
                 cattle = {
-                    'id': cattle_data['cattle']['id'],
-                    'type': cattle_data['cattle']['type'],
-                    'number': cattle_data['cattle']['number'],
-                    'name': cattle_data['cattle']['name'],
-                    'gender': cattle_data['cattle']['gender'],
-                    'breed': cattle_data['cattle']['breed'],
-                    'birth_date': cattle_data['cattle']['birth_date'],
-                    'acquisition_method': cattle_data['cattle']['acquisition_method'],
-                    'entry_date': cattle_data['cattle']['entry_date'],
-                    'comments': cattle_data['cattle']['comments'],
+                    'id': cattle_data['id'],
+                    'type': cattle_data['type'],
+                    'number': cattle_data['number'],
+                    'name': cattle_data['name'],
+                    'gender': cattle_data['gender'],
+                    'breed': cattle_data['breed'],
+                    'birth_date': cattle_data['birth_date'],
+                    'acquisition_method': cattle_data['acquisition_method'],
+                    'entry_date': cattle_data['entry_date'],
+                    'comments': cattle_data['comments'],
                 }
                 self.cattle_list.append(cattle)
 
@@ -50,73 +145,5 @@ class CattleGroupData:
         The active cattle are those whose 'end_date' is None in the group data.
         """
         self.active_cattle = sum(
-            1 for cattle_data in self.group_data if cattle_data['cattle']['end_date'] is None)
-
-
-class GroupsManagement:
-    """
-    Manages groups of cattle and performs calculations on the groups.
-    """
-
-    def __init__(self):
-        """
-        Initializes a GroupsManagement instance with an empty list of groups.
-        """
-        self.groups: list[GroupNumbers] = []
-
-    def calculate_groups(self, estimation_date):
-        """
-        Calculates the groups of cattle based on the provided estimation date.
-
-        :param estimation_date: The estimation date for the calculation.
-        :return: A dictionary containing the calculated groups of cattle.
-        """
-        cattle_list = list(Cattle.objects.filter(deleted=False).values())
-        groups = {
-            'Cows': [{'cattle': cattle, 'weight': round(estimate_cattle_weight(cattle['id'], estimation_date), 2)}
-                     for cattle in cattle_list if cattle['gender'] == 'Cow'
-                     and cattle['entry_date'] < estimation_date],
-
-            'Calves': [{'cattle': cattle, 'weight': round(estimate_cattle_weight(cattle['id'],
-                                                                                      estimation_date), 2)} for cattle
-                       in cattle_list if cattle['gender'] in ['Heifer', 'Bull']
-                       and 0 <= calculate_age(cattle['birth_date'], estimation_date) < 12
-                       and cattle['entry_date'] < estimation_date],
-
-            'Young_Heifer': [
-                {'cattle': cattle, 'weight': round(estimate_cattle_weight(cattle['id'], estimation_date), 2)}
-                for cattle in cattle_list if cattle['gender'] == 'Heifer'
-                and 12 <= calculate_age(cattle['birth_date'], estimation_date) < 24
-                and cattle['entry_date'] < estimation_date],
-
-            'Adult_Heifer': [
-                {'cattle': cattle, 'weight': round(estimate_cattle_weight(cattle['id'], estimation_date), 2)}
-                for cattle in cattle_list if cattle['gender'] == 'Heifer'
-                and calculate_age(cattle['birth_date'], estimation_date) >= 24
-                and cattle['entry_date'] < estimation_date],
-
-            'Young_Bull': [
-                {'cattle': cattle, 'weight': round(estimate_cattle_weight(cattle['id'], estimation_date), 2)}
-                for cattle in cattle_list if cattle['gender'] == 'Bull'
-                and 12 <= calculate_age(cattle['birth_date'], estimation_date) < 24
-                and cattle['entry_date'] < estimation_date],
-
-            'Adult_Bull': [
-                {'cattle': cattle, 'weight': round(estimate_cattle_weight(cattle['id'], estimation_date), 2)}
-                for cattle in cattle_list if cattle['gender'] == 'Bull'
-                and calculate_age(cattle['birth_date'], estimation_date) >= 24
-                and cattle['entry_date'] < estimation_date],
-        }
-        return groups
-
-    def add_group(self, group_name, estimation_date):
-        """
-        Adds a group with the provided group name to the groups list based on the estimation date.
-
-        :param group_name: The name of the group to add.
-        :param estimation_date: The estimation date for the group calculation.
-        """
-        groups = self.calculate_groups(estimation_date)
-        group_data = groups.get(group_name, {})
-        self.groups[group_name] = group_data
+            1 for cattle_data in self.group_data if cattle_data['end_date'] is None)
 

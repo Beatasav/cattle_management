@@ -23,13 +23,13 @@ def home(request):
     active_field_count = Field.objects.filter(is_active=True).count()
 
     groups_manager = GroupsManagement()
-    today_groups = groups_manager.calculate_groups(estimation_date=date.today())
+    today_groups = groups_manager.calculate_groups(reference_date=date.today())
 
     total_cattle_count = 0
     for group_data in today_groups.values():
         alive_cows_in_group = 0
         for cattle_data in group_data:
-            if cattle_data['cattle']['end_date'] is None:
+            if cattle_data['end_date'] is None:
                 alive_cows_in_group += 1
         total_cattle_count += alive_cows_in_group
 
@@ -62,7 +62,7 @@ def group_data(request, group_name):
     :return: The rendered group data page with the selected group's data.
     """
     groups_manager = GroupsManagement()
-    today_cattle = groups_manager.calculate_groups(estimation_date=date.today())
+    today_cattle = groups_manager.calculate_groups(reference_date=date.today())
 
     selected_group = group_name
 

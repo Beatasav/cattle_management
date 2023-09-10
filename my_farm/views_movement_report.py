@@ -1,7 +1,8 @@
 from datetime import date, datetime
 from django.shortcuts import render, redirect
 from django.views import View
-from .cattle_groups import GroupsManagement, GroupNumbers
+from .cattle_groups import GroupsManagement
+from .report_calculations import AcquisitionLossCalculator, MovementCalculator, GroupNumbers
 
 
 class GenerateReportView(View):
@@ -116,29 +117,53 @@ class LivestockMovementReportView(GroupsManagement, GenerateReportView, View):
         Returns:
             HttpResponse: The rendered HTTP response with the generated report.
         """
+        # Check if report data can be loaded, or redirect if not
         if not self.load_report_data(request):
             return redirect('my_farm:generate_report')
 
+        # Initialize the GroupsManagement instance
         groups_manager = GroupsManagement()
 
-        estimation_date = groups_manager.calculate_groups(estimation_date=self.end_date)
-        start_date_groups = groups_manager.calculate_groups(estimation_date=self.start_date)
-        end_date_groups = groups_manager.calculate_groups(estimation_date=self.end_date)
+        # Calculate groups data for estimation, start date, and end date
+        estimation_date = groups_manager.calculate_groups(reference_date=self.end_date)
+        start_date_groups = groups_manager.calculate_groups(reference_date=self.start_date)
+        end_date_groups = groups_manager.calculate_groups(reference_date=self.end_date)
 
+        # Initialize the groups list to store group statistics
         self.groups = []
+
         for group_name, cattle_data in estimation_date.items():
+            # Create a GroupNumbers instance and calculate statistics
             group = GroupNumbers(group_name, cattle_data)
-            group.quantity(start_date_groups, end_date_groups, self.start_date, self.end_date)
-            group.check_acquisition(self.start_date, self.end_date)
-            group.check_loss(self.start_date, self.end_date)
-            group.check_movement(start_date_groups, end_date_groups, self.start_date, self.end_date)
+            group.calculate_start_date_stats(start_date_groups, self.start_date)
+            group.calculate_end_date_stats(end_date_groups, self.end_date)
+            group.calculate_difference()
+
+            # Create an instance of AcquisitionLossCalculator and calculate acquisition and loss statistics
+            acquisition_loss_calculator = AcquisitionLossCalculator(group_name, cattle_data)
+            acquisition_loss_calculator.calculate_acquisition(self.start_date, self.end_date)
+            acquisition_loss_calculator.calculate_loss(self.start_date, self.end_date)
+
+            # Assign acquisition and loss statistics to the group
+            group.acquisition_stats = acquisition_loss_calculator
+
+            # Create an instance of MovementCalculator and calculate movement statistics
+            movement_calculator = MovementCalculator(group_name, cattle_data)
+            movement_calculator.calculate_movement_in_and_out(start_date_groups, self.start_date, end_date_groups,
+                                                              self.end_date)
+
+            # Assign movement statistics to the group
+            group.movement_stats = movement_calculator
+
+            # Add the group to the list of groups
             self.groups.append(group)
 
+        # Prepare context for rendering the report template
         context = {
             'start_date': self.start_date.isoformat(),
             'end_date': self.end_date.isoformat(),
             'groups': self.groups,
         }
 
+        # Render the report template and return the HTTP response
         return render(request, self.report_template, context)
-
