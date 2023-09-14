@@ -1,6 +1,6 @@
-from dateutil.relativedelta import relativedelta
 from my_farm.models import Cattle
 from .report_calculations import GroupDataFilters
+from .utils import calculate_age
 
 
 class GroupsManagement:
@@ -35,35 +35,35 @@ class GroupsManagement:
             'Calves': [
                 cattle for cattle in cattle_list if (
                     cattle['gender'] in ['Heifer', 'Bull'] and
-                    0 <= self.calculate_age(cattle['birth_date'], reference_date) < 12 and
+                    0 <= calculate_age(cattle['birth_date'], reference_date) < 12 and
                     cattle['entry_date'] < reference_date
                 )
             ],
             'Young_Heifer': [
                 cattle for cattle in cattle_list if (
                     cattle['gender'] == 'Heifer' and
-                    12 <= self.calculate_age(cattle['birth_date'], reference_date) < 24 and
+                    12 <= calculate_age(cattle['birth_date'], reference_date) < 24 and
                     cattle['entry_date'] < reference_date
                 )
             ],
             'Adult_Heifer': [
                 cattle for cattle in cattle_list if (
                     cattle['gender'] == 'Heifer' and
-                    self.calculate_age(cattle['birth_date'], reference_date) >= 24 and
+                    calculate_age(cattle['birth_date'], reference_date) >= 24 and
                     cattle['entry_date'] < reference_date
                 )
             ],
             'Young_Bull': [
                 cattle for cattle in cattle_list if (
                     cattle['gender'] == 'Bull' and
-                    12 <= self.calculate_age(cattle['birth_date'], reference_date) < 24 and
+                    12 <= calculate_age(cattle['birth_date'], reference_date) < 24 and
                     cattle['entry_date'] < reference_date
                 )
             ],
             'Adult_Bull': [
                 cattle for cattle in cattle_list if (
                     cattle['gender'] == 'Bull' and
-                    self.calculate_age(cattle['birth_date'], reference_date) >= 24 and
+                    calculate_age(cattle['birth_date'], reference_date) >= 24 and
                     cattle['entry_date'] < reference_date
                 )
             ],
@@ -80,21 +80,6 @@ class GroupsManagement:
         groups = self.calculate_groups(reference_date)
         group_data = groups.get(group_name, [])
         self.groups[group_name] = group_data
-
-    @staticmethod
-    def calculate_age(birth_date, reference_date):
-        """
-        Calculates the age in months based on the birthdate and estimation date.
-
-        :param birth_date: The birthdate of the cattle.
-        :param reference_date: The reference date for the calculation.
-        :return: The age in months.
-        """
-        if reference_date < birth_date:
-            return -1
-        age = relativedelta(reference_date, birth_date)
-        age_in_months = age.years * 12 + age.months
-        return age_in_months
 
 
 class CattleGroupData:
